@@ -1,17 +1,11 @@
-#include "I2C_System_Structs.hpp"
+/*
+Created by Alexander Karl Moldenhauer, July 9 2015.
+*/
 
-//define the addresses that are motor chips
-I2C_MOTOR_CHIPS(2)
-	0,
-	1
-I2C_MOTOR_CHIPS_END
+#pragma once
+#include "I2C_Defines.hpp"
 
-//set motors
-I2C_NUM_MOTORS(4)
-	{ 0, I2C_MOTOR_PIN_SELECT(0) }, //X Motor
-	{ 0, I2C_MOTOR_PIN_SELECT(1) }, //Y Motor
-	{ 1, I2C_MOTOR_PIN_SELECT(0) }, //Z Motor
-	{ 1, I2C_MOTOR_PIN_SELECT(1) }  //E0 Motor
-//	{ address, pins}
-//	{ address, ePin, sPin, dPin, rPin }
-I2C_NUM_MOTORS_END
+I2C_CONFIG_DECLARATION;
+
+//If you are in here, GET THE F**K OUT!
+//Open up the cpp file instead to configure I2C System!
