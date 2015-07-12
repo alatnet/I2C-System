@@ -21,30 +21,42 @@
     <ClCompile Include="Main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="I2C_System.cpp">
+    <ClCompile Include="I2C Objects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="I2C_Objects.cpp">
+    <ClCompile Include="I2C System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="I2C_System_Config.cpp">
+    <ClCompile Include="I2C System Config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I2C Chip Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="I2C_System_Header.hpp">
+    <ClInclude Include="I2C Chip Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="I2C_System_Config.h">
+    <ClInclude Include="I2C Chip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="I2C_System.hpp">
+    <ClInclude Include="I2C Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="I2C Objects.hpp">
+    <ClInclude Include="I2C Objects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="I2C_Defines.hpp">
+    <ClInclude Include="I2C System Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="I2C System Header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="I2C System.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="I2C Platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

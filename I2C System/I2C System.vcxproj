@@ -79,17 +79,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="I2C_Objects.cpp" />
-    <ClCompile Include="I2C_System.cpp" />
-    <ClCompile Include="I2C_System_Config.cpp" />
+    <ClCompile Include="I2C Chip Database.cpp" />
+    <ClCompile Include="I2C Objects.cpp" />
+    <ClCompile Include="I2C System.cpp" />
+    <ClCompile Include="I2C System Config.cpp" />
     <ClCompile Include="Main.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="I2C Objects.hpp" />
-    <ClInclude Include="I2C_Defines.hpp" />
-    <ClInclude Include="I2C_System.hpp" />
-    <ClInclude Include="I2C_System_Config.h" />
-    <ClInclude Include="I2C_System_Header.hpp" />
+    <ClInclude Include="I2C Chip Database.h" />
+    <ClInclude Include="I2C Chip.h" />
+    <ClInclude Include="I2C Objects.h" />
+    <ClInclude Include="I2C Defines.h" />
+    <ClInclude Include="I2C Platform.h" />
+    <ClInclude Include="I2C System.h" />
+    <ClInclude Include="I2C System Config.h" />
+    <ClInclude Include="I2C System Header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

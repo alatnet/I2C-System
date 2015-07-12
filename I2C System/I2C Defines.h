@@ -1,9 +1,8 @@
 /*
 Created by Alexander Karl Moldenhauer, July 9 2015.
 */
-
 #pragma once
-#include "I2C Objects.hpp"
+#include "I2C Objects.h"
 
 //DO NOT EDIT!!!
 #define I2C_CONFIG_DECLARATION void setupI2C(I2C_Object_Root* root)
@@ -56,19 +55,19 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 
 //~~Config Entries~~
 //TODO apparently this causes an "expeced an expression" error. this needs to be fixed...
-#define I2C_MOTOR(node, type, address, ePin, sPin, dPin, rPin) \
-	currObj = new I2C_Motor(address, ePin, sPin, dPin, rPin); \
+#define I2C_MOTOR(node, type, address, chip, ePin, sPin, dPin, rPin) \
+	currObj = new I2C_Motor(address, &chip, ePin, sPin, dPin, rPin); \
 	currObj->setParent(node); \
 	node->addI2CObj(currObj,currLane); \
 	currMotor = NULL;
 
 //TODO add this into the code
-#define I2C_ENDSTOP(node, type, address, pin)
-#define I2C_TEMP_SENSOR(node, type, address, pin)
-#define I2C_HEATER(node,address,pin)
+#define I2C_ENDSTOP(node, type, address, chip, pin)
+#define I2C_TEMP_SENSOR(node, type, address, chip, pin)
+#define I2C_HEATER(node, type ,address, chip, pin)
 
-#define I2C_MULTIPLEXER_START(node, address) \
-	prevMultiplexer.push_back(currMultiplexer); \
+#define I2C_MULTIPLEXER_START(node, address, chip) \
+	prevMultiplexer.push_back(currMultiplexer, *chip); \
 	currMultiplexer = new I2C_Multiplexer(address); \
 	currMultiplexer->setParent(node); \
 	node->addI2CObj(currMultiplexer,currLane);
