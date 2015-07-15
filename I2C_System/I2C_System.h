@@ -2,11 +2,14 @@
 Created by Alexander Karl Moldenhauer, July 9 2015.
 */
 #pragma once
-#include "I2C System Header.h"
-#include "I2C Platform.h"
-#include "I2C Defines.h"
-#include "I2C Objects.h"
-#include "I2C System Config.h"
+
+#ifndef I2C_SYSTEM_H
+#define I2C_SYSTEM_H
+
+#include "I2C_Platform.h"
+#include "I2C_Defines.h"
+#include "I2C_Objects.h"
+#include "I2C_System_Config.h"
 
 class I2C_System {
 public:
@@ -17,3 +20,4 @@ private:
 	static I2C_Object_Root* root;
 };
 
+#endif

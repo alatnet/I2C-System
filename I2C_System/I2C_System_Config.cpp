@@ -1,7 +1,7 @@
 /*
 Created by Alexander Karl Moldenhauer, July 9 2015.
 */
-#include "I2C System Config.h"
+#include "I2C_System_Config.h"
 
 I2C_CONFIG_START
 	//example of a simple system

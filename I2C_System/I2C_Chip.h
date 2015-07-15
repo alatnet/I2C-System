@@ -2,7 +2,9 @@
 Created by Alexander Karl Moldenhauer, July 9 2015.
 */
 #pragma once
-#include "I2C System Header.h"
+
+#ifndef I2C_CHIP_H
+#define I2C_CHIP_H
 
 //abstract base class
 class I2C_Chip {
@@ -12,3 +14,5 @@ public:
 	virtual int read(int data) = 0;
 	virtual void write(int data) = 0;
 };
+
+#endif

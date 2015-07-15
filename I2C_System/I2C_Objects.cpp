@@ -1,7 +1,7 @@
 /*
 Created by Alexander Karl Moldenhauer, July 9 2015.
 */
-#include "I2C Objects.h"
+#include "I2C_Objects.h"
 
 void I2C_Object_Root::init() {
 	for (int i = 0; i < this->objs.size(); i++) this->objs.at(i)->init();
@@ -48,12 +48,14 @@ void I2C_Motor::step(bool dir) {
 void I2C_Multiplexer::init() {
 	this->parent->referToParent(this->address);
 
+	this->chip->init(0);
+
 	for (int i = 0; i < this->objs.size(); i++) {
 		I2C_Multiplex_Node n = this->objs.at(i);
 
 		I2C_BEGIN(this->address);
 			//switch to the correct lane
-			this->chip->init(0);
+			this->chip->write(n.lane);
 		I2C_END;
 
 		n.obj->init();

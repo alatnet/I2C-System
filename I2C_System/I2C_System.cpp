@@ -1,7 +1,7 @@
 /*
 Created by Alexander Karl Moldenhauer, July 9 2015.
 */
-#include "I2C System.h"
+#include "I2C_System.h"
 
 void I2C_System::init() {
 	//start up the i2c system

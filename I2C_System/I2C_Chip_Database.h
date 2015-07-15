@@ -2,11 +2,14 @@
 Created by Alexander Karl Moldenhauer, July 9 2015.
 */
 #pragma once
-#include "I2C System Header.h"
-#include "I2C Defines.h"
-#include "I2C Platform.h"
-#include "I2C Chip.h"
-#include "I2C System Config.h"
+
+#ifndef I2C_CHIP_DATABASE_H
+#define I2C_CHIP_DATABASE_H
+
+#include "I2C_Defines.h"
+#include "I2C_Platform.h"
+#include "I2C_Chip.h"
+#include "I2C_System_Config.h"
 
 /*
 The chip database is used to add in what chips do specific to what action taken.
@@ -18,10 +21,10 @@ Chips must follow this format for defining new chips:
 I2C_<manufacture>_<type>_<chip>
 
 Types are as followed:
-IOE - I/O Extender
-M - Multiplexer
-AD - Analog to Digital
-DA - Digital to Analog
+IOE - I/O Extender - used for motors and endstops
+M - Multiplexer - used to attach more devices
+AD - Analog to Digital - used for temperature sensors
+DA - Digital to Analog - used for heating devices
 
 Aditional types can be added but types above CANNOT be changed.
 
@@ -30,13 +33,15 @@ They also MUST have a global variable defined using the chip define as it's vari
 */
 
 #ifdef I2C_TI_IOE_TCA9534
-class I2C_TI_IOE_TCA9534_Chip : I2C_Chip {
-public:
-	void init(int mode);
-	int configuration();
-	int read(int data);
-	void write(int data);
-};
+	class I2C_TI_IOE_TCA9534_Chip : I2C_Chip {
+	public:
+		void init(int mode);
+		int configuration();
+		int read(int data);
+		void write(int data);
+	};
 
-I2C_TI_IOE_TCA9534_Chip I2C_TI_IOE_TCA9534;
+	I2C_TI_IOE_TCA9534_Chip I2C_TI_IOE_TCA9534;
+#endif
+
 #endif

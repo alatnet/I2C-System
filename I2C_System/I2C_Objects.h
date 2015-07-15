@@ -2,10 +2,14 @@
 Created by Alexander Karl Moldenhauer, July 9 2015.
 */
 #pragma once
-#include "I2C System Header.h"
-#include "I2C Platform.h"
-#include "I2C Defines.h"
-#include "I2C Chip.h"
+
+#ifndef I2C_OBJECTS_H
+#define I2C_OBJECTS_H
+
+#include <vector>
+#include "I2C_Platform.h"
+#include "I2C_Defines.h"
+#include "I2C_Chip.h"
 
 //abstract base class
 class I2C_Object {
@@ -86,3 +90,5 @@ M1 is a multiplexer that recieves lane change requests via "referToParent" funct
 Notes.
 Using an unsigned char data type for i2c addresses ensures that we are using the least amount of space we can since an unsigned char is 0 to 255 and i2c addresses range from 0 to 127.
 */
+
+#endif

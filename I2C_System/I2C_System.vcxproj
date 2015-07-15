@@ -50,10 +50,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>D:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;D:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\mega;D:\Users\alatnet.alatnet-PC\Documents\Visual Studio 2013\Projects\I2C System\I2C System;D:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire;D:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\utility;D:\Program Files (x86)\Arduino\libraries;D:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;D:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers;D:\Users\alatnet.alatnet-PC\Documents\Arduino\libraries;D:\Program Files (x86)\Arduino\hardware\tools\avr/avr/include/;D:\Program Files (x86)\Arduino\hardware\tools\avr//avr/include/avr/;D:\Program Files (x86)\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>D:\Users\alatnet.alatnet-PC\Documents\Visual Studio 2013\Projects\I2C System\I2C System\Visual Micro\.I2C System.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__AVR_ATmega2560__;F_CPU=16000000L;ARDUINO=165;ARDUINO_AVR_MEGA2560;ARDUINO_ARCH_AVR;__cplusplus;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -74,26 +74,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="I2C_Chip_Database.cpp" />
+    <ClCompile Include="I2C_Objects.cpp" />
+    <ClCompile Include="I2C_System.cpp" />
+    <ClCompile Include="I2C_System_Config.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="I2C_Chip_Database.h" />
+    <ClInclude Include="I2C_Chip.h" />
+    <ClInclude Include="I2C_Objects.h" />
+    <ClInclude Include="I2C_Defines.h" />
+    <ClInclude Include="I2C_Platform.h" />
+    <ClInclude Include="I2C_System.h" />
+    <ClInclude Include="I2C_System_Config.h" />
+    <ClInclude Include="Visual Micro\.I2C System.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="I2C_System.ino">
       <FileType>CppCode</FileType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="I2C Chip Database.cpp" />
-    <ClCompile Include="I2C Objects.cpp" />
-    <ClCompile Include="I2C System.cpp" />
-    <ClCompile Include="I2C System Config.cpp" />
-    <ClCompile Include="Main.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="I2C Chip Database.h" />
-    <ClInclude Include="I2C Chip.h" />
-    <ClInclude Include="I2C Objects.h" />
-    <ClInclude Include="I2C Defines.h" />
-    <ClInclude Include="I2C Platform.h" />
-    <ClInclude Include="I2C System.h" />
-    <ClInclude Include="I2C System Config.h" />
-    <ClInclude Include="I2C System Header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
