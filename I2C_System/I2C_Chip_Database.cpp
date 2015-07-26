@@ -20,8 +20,9 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 		return I2C_READ;
 	}
 
-	void I2C_TI_IOE_TCA9534_Chip::write(int data) {
-		I2C_WRITE(0x01);
+	void I2C_TI_IOE_TCA9534_Chip::write(int data, unsigned char type) {
+		if (type == I2C_WRITE_RAW) I2C_WRITE(0x01);
+		else I2C_WRITE(0x02);
 		I2C_WRITE(data);
 	}
 #endif

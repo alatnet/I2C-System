@@ -21,10 +21,10 @@ Chips must follow this format for defining new chips:
 I2C_<manufacture>_<type>_<chip>
 
 Types are as followed:
-IOE - I/O Extender - used for motors and endstops
+IOE - I/O Extender - used for motors, endstops, servos, and possibly heating devices
 M - Multiplexer - used to attach more devices
 AD - Analog to Digital - used for temperature sensors
-DA - Digital to Analog - used for heating devices
+DA - Digital to Analog - used for heating devices (using a digital pot)
 
 Aditional types can be added but types above CANNOT be changed.
 
@@ -33,15 +33,18 @@ They also MUST have a global variable defined using the chip define as it's vari
 */
 
 #ifdef I2C_TI_IOE_TCA9534
-	class I2C_TI_IOE_TCA9534_Chip : I2C_Chip {
+	#undef I2C_TI_IOE_TCA9534
+	#define I2C_TI_IOE_TCA9534 i2c_ti_ioe_tca9534
+
+	class I2C_TI_IOE_TCA9534_Chip : public I2C_Chip {
 	public:
 		void init(int mode);
 		int configuration();
 		int read(int data);
-		void write(int data);
+		void write(int data, unsigned char type);
 	};
 
-	I2C_TI_IOE_TCA9534_Chip I2C_TI_IOE_TCA9534;
+	extern I2C_TI_IOE_TCA9534_Chip I2C_TI_IOE_TCA9534;
 #endif
 
 #endif

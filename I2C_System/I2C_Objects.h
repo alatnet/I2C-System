@@ -6,7 +6,7 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 #ifndef I2C_OBJECTS_H
 #define I2C_OBJECTS_H
 
-#include <vector>
+#include <map>
 #include "I2C_Platform.h"
 #include "I2C_Defines.h"
 #include "I2C_Chip.h"
@@ -14,7 +14,7 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 //abstract base class
 class I2C_Object {
 public:
-	virtual void referToParent(unsigned char address) = 0;
+	virtual void referToParent(I2C_Object* obj) = 0;
 	virtual void setParent(I2C_Object* p) = 0;
 	virtual void addI2CObj(I2C_Object* obj, unsigned int i) = 0;
 	virtual void init() = 0;
@@ -24,21 +24,22 @@ public:
 
 class I2C_Object_Root : public I2C_Object {
 public:
-	void referToParent(unsigned char address) {};
+	void referToParent(I2C_Object* obj) {};
 	void setParent(I2C_Object* p) {};
-	void addI2CObj(I2C_Object* obj, unsigned int i) { objs.push_back(obj); }
+	void addI2CObj(I2C_Object* obj, unsigned int i) { objs[obj->getAddress()] = obj; }
 	void init();
 	void destroy();
 	unsigned char getAddress() { return 128; } //root address is 128 since the max number of addresses are from 0 to 127.
 private:
-	std::vector<I2C_Object*> objs; //hash table it
+	//std::vector<I2C_Object*> objs; //hash table it
+	std::map<unsigned char, I2C_Object*> objs; //have it as unsigned char as the max devices allowed are from 0 to 127.  save space by having it as unsigned char which is from 0 to 255.
 };
 
 class I2C_Motor : public I2C_Object {
 public:
 	I2C_Motor(unsigned char address, I2C_Chip* chip, unsigned int ePin, unsigned int sPin, unsigned int dPin, unsigned int rPin) : address(address), chip(chip), ePin(ePin), sPin(sPin), dPin(dPin), rPin(rPin) {}
 	void step(bool dir); //refer to parent then step motor.
-	void referToParent(unsigned char address) {} //do nothing, we are the lowest device
+	void referToParent(I2C_Object* obj) {} //do nothing, we are the lowest device
 	void setParent(I2C_Object* p) { this->parent = p; }
 	void addI2CObj(I2C_Object* obj, unsigned int i) {} //dont need it
 	void init();
@@ -51,16 +52,11 @@ private:
 	unsigned int ePin, sPin, dPin, rPin;
 };
 
-struct I2C_Multiplex_Node {
-	I2C_Object* obj;
-	unsigned int lane;
-};
-
 class I2C_Multiplexer : public I2C_Object {
 public:
 	I2C_Multiplexer(unsigned char address, I2C_Chip* chip) : address(address), chip(chip) {}
-	void addI2CObj(I2C_Object* obj, unsigned int lane);
-	void referToParent(unsigned char address); //refer to parent then switch to the right lane
+	void addI2CObj(I2C_Object* obj, unsigned int lane) { objs[obj] = lane; }
+	void referToParent(I2C_Object* obj); //refer to parent then switch to the right lane
 	void setParent(I2C_Object* p) { this->parent = p; }
 	void init();
 	void destroy();
@@ -69,7 +65,7 @@ private:
 	I2C_Chip* chip;
 	unsigned char address;
 	I2C_Object* parent;
-	std::vector<I2C_Multiplex_Node> objs; //hash table it
+	std::map<I2C_Object*, unsigned int> objs;
 };
 
 /*

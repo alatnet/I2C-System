@@ -7,17 +7,24 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 #define I2C_DEFINES_H
 
 #include "I2C_Objects.h"
+#include <vector>
 
 //DO NOT EDIT!!!
-#define I2C_CONFIG_DECLARATION void setupI2C(I2C_Object_Root* root)
+#define I2C_CONFIG_DECLARATION_NAME setupI2C
+#define I2C_CONFIG_DECLARATION void I2C_CONFIG_DECLARATION_NAME(I2C_Object_Root* root, std::map<unsigned int, I2C_Motor*>* motors)
 #define I2C_CONFIG_START \
 	I2C_CONFIG_DECLARATION { \
-	I2C_Object* currObj = NULL; \
-	I2C_Multiplexer* currMultiplexer = NULL; \
-	unsigned int currLane = 0; \
+	I2C_Object* currObj; \
+	I2C_Multiplexer* currMultiplexer; \
+	unsigned int currLane; \
 	std::vector<I2C_Multiplexer*> prevMultiplexer;
 
 #define I2C_CONFIG_END }
+
+#define I2C_MOTOR_COMMON(node,type) \
+	currObj->setParent(node); \
+	I2C_System::addMotor(type, (I2C_Motor*)currObj); \
+	node->addI2CObj(currObj, currLane);
 
 //~~nodes~~
 #define I2C_ROOT root
@@ -51,29 +58,32 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 //~~Misc~~
 #define I2C_MULTIPLEXER_LANE(lane) currLane = lane;
 
-#define I2C_MOTOR_PIN_SELECT(x) \
-	(x*4)+0, (x*4)+1, (x*4)+2, (x*4)+3
+/*#define I2C_MOTOR_PIN_SELECT(x) \
+	(x*4)+0, (x*4)+1, (x*4)+2, (x*4)+3*/
 
 #define I2C_ADDRESS(a,b,c,d,e,f,g) a<<6 | b<<5 | c<<4 | d<<3 | e<<2 | f<<1 | g
 //~~Misc end
 
 //~~Config Entries~~
-//TODO apparently this causes an "expeced an expression" error. this needs to be fixed...
 #define I2C_MOTOR(node, type, address, chip, ePin, sPin, dPin, rPin) \
 	currObj = new I2C_Motor(address, &chip, ePin, sPin, dPin, rPin); \
-	currObj->setParent(node); \
-	node->addI2CObj(currObj,currLane);
+	I2C_MOTOR_COMMON(node,type)
+
+#define I2C_MOTOR(node, type, address, chip, pinSelect) \
+	currObj = new I2C_Motor(address, &chip, (pinSelect*4)+0, (pinSelect*4)+1, (pinSelect*4)+2, (pinSelect*4)+3); \
+	I2C_MOTOR_COMMON(node,type)
 
 //TODO add this into the code
 #define I2C_ENDSTOP(node, type, address, chip, pin)
 #define I2C_TEMP_SENSOR(node, type, address, chip, pin)
-#define I2C_HEATER(node, type ,address, chip, pin)
+#define I2C_HEATER(node, type, address, chip, pin)
+#define I2C_SERVO(node, type, address, chip, pin)
 
 #define I2C_MULTIPLEXER_START(node, address, chip) \
-	prevMultiplexer.push_back(currMultiplexer, *chip); \
-	currMultiplexer = new I2C_Multiplexer(address); \
+	prevMultiplexer.push_back(currMultiplexer); \
+	currMultiplexer = new I2C_Multiplexer(address, *chip); \
 	currMultiplexer->setParent(node); \
-	node->addI2CObj(currMultiplexer,currLane);
+	node->addI2CObj(currMultiplexer, currLane);
 
 #define I2C_MULTIPLEXER_END \
 	if (prevMultiplexer.size() != 0){ \

@@ -16,6 +16,10 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 //define common functions for I2C
 //use this to make I2C System cross platform
 #ifdef ARDUINO_I2C //arduino i2c platform
+	#include <StandardCplusplus.h>
+	#include <system_configuration.h>
+	#include <unwind-cxx.h>
+	#include <utility.h>
 	#include <Wire.h>
 	#define I2C_INIT Wire.begin()
 	#define I2C_DESTROY
