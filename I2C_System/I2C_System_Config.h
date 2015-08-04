@@ -6,7 +6,7 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 #ifndef I2C_SYSTEM_CONFIG_H
 #define I2C_SYSTEM_CONFIG_H
 
-#include "I2C_System.h"
+#include "I2C_Sys.h"
 
 #include "I2C_Defines.h"
 #include "I2C_Chip.h"
@@ -19,3 +19,4 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 I2C_CONFIG_DECLARATION;
 
 #endif
+

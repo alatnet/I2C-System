@@ -24,7 +24,7 @@
     <ClCompile Include="I2C_System_Config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="I2C_System.cpp">
+    <ClCompile Include="I2C_Sys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,7 +47,7 @@
     <ClInclude Include="I2C_System_Config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="I2C_System.h">
+    <ClInclude Include="I2C_Sys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

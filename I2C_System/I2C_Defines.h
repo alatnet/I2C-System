@@ -11,7 +11,7 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 
 //DO NOT EDIT!!!
 #define I2C_CONFIG_DECLARATION_NAME setupI2C
-#define I2C_CONFIG_DECLARATION void I2C_CONFIG_DECLARATION_NAME(I2C_Object_Root* root, std::map<unsigned int, I2C_Motor*>* motors)
+#define I2C_CONFIG_DECLARATION void I2C_CONFIG_DECLARATION_NAME(I2C_Object_Root* root)
 #define I2C_CONFIG_START \
 	I2C_CONFIG_DECLARATION { \
 	I2C_Object* currObj; \
@@ -65,11 +65,12 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 //~~Misc end
 
 //~~Config Entries~~
+//manual pin configuration
 #define I2C_MOTOR(node, type, address, chip, ePin, sPin, dPin, rPin) \
 	currObj = new I2C_Motor(address, &chip, ePin, sPin, dPin, rPin); \
 	I2C_MOTOR_COMMON(node,type)
 
-#define I2C_MOTOR(node, type, address, chip, pinSelect) \
+#define I2C_MOTOR_P(node, type, address, chip, pinSelect) \
 	currObj = new I2C_Motor(address, &chip, (pinSelect*4)+0, (pinSelect*4)+1, (pinSelect*4)+2, (pinSelect*4)+3); \
 	I2C_MOTOR_COMMON(node,type)
 
@@ -93,3 +94,4 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 //~~Config Entries End~~
 
 #endif
+

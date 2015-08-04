@@ -76,7 +76,7 @@
   <ItemGroup>
     <ClCompile Include="I2C_Chip_Database.cpp" />
     <ClCompile Include="I2C_Objects.cpp" />
-    <ClCompile Include="I2C_System.cpp" />
+    <ClCompile Include="I2C_Sys.cpp" />
     <ClCompile Include="I2C_System_Config.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +85,7 @@
     <ClInclude Include="I2C_Objects.h" />
     <ClInclude Include="I2C_Defines.h" />
     <ClInclude Include="I2C_Platform.h" />
-    <ClInclude Include="I2C_System.h" />
+    <ClInclude Include="I2C_Sys.h" />
     <ClInclude Include="I2C_System_Config.h" />
   </ItemGroup>
   <ItemGroup>

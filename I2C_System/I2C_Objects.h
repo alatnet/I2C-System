@@ -37,7 +37,7 @@ private:
 
 class I2C_Motor : public I2C_Object {
 public:
-	I2C_Motor(unsigned char address, I2C_Chip* chip, unsigned int ePin, unsigned int sPin, unsigned int dPin, unsigned int rPin) : address(address), chip(chip), ePin(ePin), sPin(sPin), dPin(dPin), rPin(rPin) {}
+	I2C_Motor(unsigned char address, I2C_Chip* chip, unsigned int ePin, unsigned int sPin, unsigned int dPin, unsigned int rPin);
 	void step(bool dir); //refer to parent then step motor.
 	void referToParent(I2C_Object* obj) {} //do nothing, we are the lowest device
 	void setParent(I2C_Object* p) { this->parent = p; }
@@ -46,10 +46,10 @@ public:
 	void destroy() {}
 	unsigned char getAddress() { return this->address; }
 private:
+	unsigned char pins[4];
 	I2C_Chip* chip;
 	I2C_Object* parent;
 	unsigned char address;
-	unsigned int ePin, sPin, dPin, rPin;
 };
 
 class I2C_Multiplexer : public I2C_Object {
@@ -88,3 +88,4 @@ Using an unsigned char data type for i2c addresses ensures that we are using the
 */
 
 #endif
+

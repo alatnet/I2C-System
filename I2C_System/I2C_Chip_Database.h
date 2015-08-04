@@ -33,8 +33,10 @@ They also MUST have a global variable defined using the chip define as it's vari
 */
 
 #ifdef I2C_TI_IOE_TCA9534
+//ADDRESS: 0100XXX
 	#undef I2C_TI_IOE_TCA9534
 	#define I2C_TI_IOE_TCA9534 i2c_ti_ioe_tca9534
+	#define I2C_TI_IOE_TCA9534_ADDRESS(a,b,c) I2C_ADDRESS(0,1,0,0,a,b,c)
 
 	class I2C_TI_IOE_TCA9534_Chip : public I2C_Chip {
 	public:
@@ -42,9 +44,11 @@ They also MUST have a global variable defined using the chip define as it's vari
 		int configuration();
 		int read(int data);
 		void write(int data, unsigned char type);
+		void write(unsigned char data[], unsigned int size, unsigned char type);
 	};
 
 	extern I2C_TI_IOE_TCA9534_Chip I2C_TI_IOE_TCA9534;
 #endif
 
 #endif
+

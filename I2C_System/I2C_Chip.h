@@ -19,6 +19,8 @@ public:
 	virtual int configuration() = 0;
 	virtual int read(int data) = 0;
 	virtual void write(int data, unsigned char type) = 0;
+	virtual void write(unsigned char data[], unsigned int size, unsigned char type) = 0;
 };
 
 #endif
+
