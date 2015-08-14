@@ -6,8 +6,8 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 #ifndef I2C_CHIP_DATABASE_H
 #define I2C_CHIP_DATABASE_H
 
-#include "I2C_Defines.h"
 #include "I2C_Platform.h"
+#include "I2C_Defines.h"
 #include "I2C_Chip.h"
 #include "I2C_System_Config.h"
 
@@ -21,10 +21,10 @@ Chips must follow this format for defining new chips:
 I2C_<manufacture>_<type>_<chip>
 
 Types are as followed:
-IOE - I/O Extender - used for motors, endstops, servos, and possibly heating devices
+IOE - I/O Extender - used for motors, endstops, servos, and possibly heating devices and fans
 M - Multiplexer - used to attach more devices
 AD - Analog to Digital - used for temperature sensors
-DA - Digital to Analog - used for heating devices (using a digital pot)
+DA - Digital to Analog - used for heating devices and fans (using a digital pot)
 
 Aditional types can be added but types above CANNOT be changed.
 
@@ -40,15 +40,17 @@ They also MUST have a global variable defined using the chip define as it's vari
 
 	class I2C_TI_IOE_TCA9534_Chip : public I2C_Chip {
 	public:
-		void init(int mode);
-		int configuration();
-		int read(int data);
-		void write(int data, unsigned char type);
-		void write(unsigned char data[], unsigned int size, unsigned char type);
+		void init(uint8_t address, int mode);
+		unsigned int configuration(uint8_t address, uint8_t * data);
+		unsigned int read(uint8_t address, uint8_t * data);
+		void write(uint8_t address, uint8_t data, unsigned char type);
+		void write(uint8_t address, uint8_t * data, unsigned int _size, unsigned char type);
+		unsigned int getMaxSpeed() { return I2C_SPEED_FULL;  }
 	};
 
 	extern I2C_TI_IOE_TCA9534_Chip I2C_TI_IOE_TCA9534;
 #endif
 
 #endif
+
 

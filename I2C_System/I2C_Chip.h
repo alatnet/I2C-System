@@ -15,12 +15,14 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 //abstract base class
 class I2C_Chip {
 public:
-	virtual void init(int mode) = 0;
-	virtual int configuration() = 0;
-	virtual int read(int data) = 0;
-	virtual void write(int data, unsigned char type) = 0;
-	virtual void write(unsigned char data[], unsigned int size, unsigned char type) = 0;
+	virtual void init(uint8_t address, int mode) = 0;
+	virtual unsigned int configuration(uint8_t address, uint8_t * data) = 0;
+	virtual unsigned int read(uint8_t address, uint8_t * data) = 0;
+	virtual void write(uint8_t address, uint8_t data, unsigned char type) = 0;
+	virtual void write(uint8_t address, uint8_t * data, unsigned int _size, unsigned char type) = 0;
+	virtual unsigned int getMaxSpeed() = 0;
 };
 
 #endif
+
 

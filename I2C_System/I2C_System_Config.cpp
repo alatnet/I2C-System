@@ -4,6 +4,9 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 #include "I2C_System_Config.h"
 
 I2C_CONFIG_START
+	I2C_SET_SPEED(I2C_SPEED_LIMIT) //can be found in I2C_Platform.h
+	I2C_TIMEOUT(1000) //can be found in I2C_Platform.h
+
 	I2C_MOTOR_P(I2C_ROOT, I2C_X_MOTOR, I2C_TI_IOE_TCA9534_ADDRESS(1, 1, 1), I2C_TI_IOE_TCA9534, 0)
 
 	//example of a simple system
@@ -48,4 +51,5 @@ I2C_CONFIG_START
 	I2C_MULTIPLEXER_END
 	*/
 I2C_CONFIG_END
+
 

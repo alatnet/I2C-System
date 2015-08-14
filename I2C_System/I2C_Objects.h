@@ -6,8 +6,8 @@ Created by Alexander Karl Moldenhauer, July 9 2015.
 #ifndef I2C_OBJECTS_H
 #define I2C_OBJECTS_H
 
-#include <map>
 #include "I2C_Platform.h"
+#include <map>
 #include "I2C_Defines.h"
 #include "I2C_Chip.h"
 
@@ -39,6 +39,8 @@ class I2C_Motor : public I2C_Object {
 public:
 	I2C_Motor(unsigned char address, I2C_Chip* chip, unsigned int ePin, unsigned int sPin, unsigned int dPin, unsigned int rPin);
 	void step(bool dir); //refer to parent then step motor.
+	void turnOn(bool dir);
+	void turnOff(bool dir);
 	void referToParent(I2C_Object* obj) {} //do nothing, we are the lowest device
 	void setParent(I2C_Object* p) { this->parent = p; }
 	void addI2CObj(I2C_Object* obj, unsigned int i) {} //dont need it
@@ -50,6 +52,7 @@ private:
 	I2C_Chip* chip;
 	I2C_Object* parent;
 	unsigned char address;
+  unsigned int dPin;
 };
 
 class I2C_Multiplexer : public I2C_Object {
@@ -88,4 +91,5 @@ Using an unsigned char data type for i2c addresses ensures that we are using the
 */
 
 #endif
+
 

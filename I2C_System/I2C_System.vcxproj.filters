@@ -27,6 +27,9 @@
     <ClCompile Include="I2C_Sys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="I2C.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I2C_Chip_Database.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="I2C_Sys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="I2C.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

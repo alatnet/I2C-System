@@ -37,6 +37,7 @@ I2C_Motor::I2C_Motor(unsigned char address, I2C_Chip* chip, unsigned int ePin, u
 	else if (dPin >= 8 && dPin <= 15) this->pins[1] |= 1 << dPin;	//8-15
 	else if (dPin >= 16 && dPin <= 23) this->pins[2] |= 1 << dPin;	//16-23
 	else if (dPin >= 24 && dPin <= 31) this->pins[3] |= 1 << dPin;	//24-31
+	this->dPin = dPin;
 
 	if (rPin >= 0 && rPin <= 7) this->pins[0] |= 1 << rPin;	//0-7
 	else if (rPin >= 8 && rPin <= 15) this->pins[1] |= 1 << rPin;	//8-15
@@ -46,36 +47,81 @@ I2C_Motor::I2C_Motor(unsigned char address, I2C_Chip* chip, unsigned int ePin, u
 
 void I2C_Motor::init() {
 	this->parent->referToParent(this);
-
-	I2C_BEGIN(this->address);
-		//set motor chip to be output
-		this->chip->init(I2C_MODE_OUTPUT);
-	I2C_END;
+	//set motor chip to be output
+	this->chip->init(this->address,I2C_MODE_OUTPUT);
 }
 
 void I2C_Motor::step(bool dir) {
 	this->parent->referToParent(this);
 
-	I2C_BEGIN(this->address);
-		//write the modified pin state to turn on motor
-		this->chip->write(pins, 4, I2C_WRITE_POLARITY);
-		//write modified pin state to turn off motor
-		this->chip->write(pins, 4, I2C_WRITE_POLARITY);
-	I2C_END;
+	uint8_t data[4], otherPins[4], outputPins[4];
+	this->chip->read(this->address,data); //read which pins are on and off.
+
+	//make sure that the dir pin is being either enabled or disabled.
+	if (this->dPin >= 0 && this->dPin <= 7) this->pins[0] &= ((dir << this->dPin)&0xff); //0-7
+	else if (this->dPin >= 8 && this->dPin <= 15) this->pins[1] &= ((dir << this->dPin)&0xff); //8-15
+	else if (this->dPin >= 16 && this->dPin <= 23) this->pins[2] &= ((dir << this->dPin)&0xff);  //16-23
+	else if (this->dPin >= 24 && this->dPin <= 31) this->pins[3] &= ((dir << this->dPin)&0xff);  //24-31
+
+	//configure to set ONLY the pins we want on and off.
+	for(int i=0;i<4;i++){
+		otherPins[i] = data[i] & ~pins[i];
+		outputPins[i] = otherPins[i] | pins[i];
+	}
+  
+	this->chip->write(this->address,outputPins,4,I2C_WRITE_RAW);
+	//delay(_delay);
+	this->chip->write(this->address,otherPins,4,I2C_WRITE_RAW);
+}
+
+void I2C_Motor::turnOn(bool dir){
+	this->parent->referToParent(this);
+
+	uint8_t data[4], otherPins[4], outputPins[4];
+	this->chip->read(this->address,data); //read which pins are on and off.
+
+	//make sure that the dir pin is being either enabled or disabled.
+	if (this->dPin >= 0 && this->dPin <= 7) this->pins[0] &= ((dir << this->dPin)&0xff); //0-7
+	else if (this->dPin >= 8 && this->dPin <= 15) this->pins[1] &= ((dir << this->dPin)&0xff); //8-15
+	else if (this->dPin >= 16 && this->dPin <= 23) this->pins[2] &= ((dir << this->dPin)&0xff);  //16-23
+	else if (this->dPin >= 24 && this->dPin <= 31) this->pins[3] &= ((dir << this->dPin)&0xff);  //24-31
+
+	//configure to set ONLY the pins we want on.
+	for(int i=0;i<4;i++){
+		otherPins[i] = data[i] & ~pins[i];
+		outputPins[i] = otherPins[i] | pins[i];
+	}
+  
+	this->chip->write(this->address,outputPins,4,I2C_WRITE_RAW);
+}
+
+void I2C_Motor::turnOff(bool dir){
+	this->parent->referToParent(this);
+
+	uint8_t data[4], otherPins[4];
+	this->chip->read(this->address,data); //read which pins are on and off.
+
+	//make sure that the dir pin is being either enabled or disabled.
+	if (this->dPin >= 0 && this->dPin <= 7) this->pins[0] &= ((dir << this->dPin)&0xff); //0-7
+	else if (this->dPin >= 8 && this->dPin <= 15) this->pins[1] &= ((dir << this->dPin)&0xff); //8-15
+	else if (this->dPin >= 16 && this->dPin <= 23) this->pins[2] &= ((dir << this->dPin)&0xff);  //16-23
+	else if (this->dPin >= 24 && this->dPin <= 31) this->pins[3] &= ((dir << this->dPin)&0xff);  //24-31
+
+	//configure to set ONLY the pins we want off.
+	for(int i=0;i<4;i++) otherPins[i] = data[i] & ~pins[i];
+  
+	this->chip->write(this->address,otherPins,4,I2C_WRITE_RAW);
 }
 
 void I2C_Multiplexer::init() {
 	this->parent->referToParent(this);
 
-	this->chip->init(I2C_MODE_OUTPUT);
+	this->chip->init(this->address, I2C_MODE_OUTPUT);
 
 	for (std::map<I2C_Object*, unsigned int>::iterator iterator = this->objs.begin(); iterator != this->objs.end(); iterator++) {
-
-		I2C_BEGIN(this->address);
-			//switch to the correct lane
-			this->chip->write(iterator->second, I2C_WRITE_RAW);
-		I2C_END;
-
+		//switch to the correct lane
+		this->chip->write(this->address, iterator->second, I2C_WRITE_RAW);
+		
 		iterator->first->init();
 	}
 }
@@ -98,9 +144,8 @@ void I2C_Multiplexer::referToParent(I2C_Object* obj) {
 	std::map<I2C_Object*, unsigned int>::const_iterator it = objs.find(obj);
 	if (it == objs.end()) return;
 
-	I2C_BEGIN(this->address);
-		//switch to the correct lane
-		this->chip->write(it->second, I2C_WRITE_RAW);
-	I2C_END;
+	//switch to the correct lane
+	this->chip->write(this->address, it->second, I2C_WRITE_RAW);
 }
+
 
