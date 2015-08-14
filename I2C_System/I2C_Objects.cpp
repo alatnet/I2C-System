@@ -24,25 +24,27 @@ I2C_Motor::I2C_Motor(unsigned char address, I2C_Chip* chip, unsigned int ePin, u
 
 	//define the pins.
 	if (ePin >= 0 && ePin <= 7) this->pins[0] |= 1 << ePin;	//0-7
-	else if (ePin >= 8 && ePin <= 15) this->pins[1] |= 1 << ePin;	//8-15
-	else if (ePin >= 16 && ePin <= 23) this->pins[2] |= 1 << ePin;	//16-23
-	else if (ePin >= 24 && ePin <= 31) this->pins[3] |= 1 << ePin;	//24-31
+	else if (ePin >= 8 && ePin <= 15) this->pins[1] |= 1 << ePin-8;	//8-15
+	else if (ePin >= 16 && ePin <= 23) this->pins[2] |= 1 << ePin-16;	//16-23
+	else if (ePin >= 24 && ePin <= 31) this->pins[3] |= 1 << ePin-24;	//24-31
 
 	if (sPin >= 0 && sPin <= 7) this->pins[0] |= 1 << sPin;	//0-7
-	else if (sPin >= 8 && sPin <= 15) this->pins[1] |= 1 << sPin;	//8-15
-	else if (sPin >= 16 && sPin <= 23) this->pins[2] |= 1 << sPin;	//16-23
-	else if (sPin >= 24 && sPin <= 31) this->pins[3] |= 1 << sPin;	//24-31
+	else if (sPin >= 8 && sPin <= 15) this->pins[1] |= 1 << sPin-8;	//8-15
+	else if (sPin >= 16 && sPin <= 23) this->pins[2] |= 1 << sPin-16;	//16-23
+	else if (sPin >= 24 && sPin <= 31) this->pins[3] |= 1 << sPin-24;	//24-31
 
-	if (dPin >= 0 && dPin <= 7) this->pins[0] |= 1 << dPin;	//0-7
-	else if (dPin >= 8 && dPin <= 15) this->pins[1] |= 1 << dPin;	//8-15
-	else if (dPin >= 16 && dPin <= 23) this->pins[2] |= 1 << dPin;	//16-23
-	else if (dPin >= 24 && dPin <= 31) this->pins[3] |= 1 << dPin;	//24-31
+	/*if (dPin >= 0 && dPin <= 7) this->pins[0] |= 1 << dPin;	//0-7
+	else if (dPin >= 8 && dPin <= 15) this->pins[1] |= 1 << dPin-8;	//8-15
+	else if (dPin >= 16 && dPin <= 23) this->pins[2] |= 1 << dPin-16;	//16-23
+	else if (dPin >= 24 && dPin <= 31) this->pins[3] |= 1 << dPin-24;	//24-31*/
 	this->dPin = dPin;
 
-	if (rPin >= 0 && rPin <= 7) this->pins[0] |= 1 << rPin;	//0-7
-	else if (rPin >= 8 && rPin <= 15) this->pins[1] |= 1 << rPin;	//8-15
-	else if (rPin >= 16 && rPin <= 23) this->pins[2] |= 1 << rPin;	//16-23
-	else if (rPin >= 24 && rPin <= 31) this->pins[3] |= 1 << rPin;	//24-31
+	/*if (rPin >= 0 && rPin <= 7) this->pins[0] |= 0 << rPin;	//0-7
+	else if (rPin >= 8 && rPin <= 15) this->pins[1] |= 0 << rPin-8;	//8-15
+	else if (rPin >= 16 && rPin <= 23) this->pins[2] |= 0 << rPin-16;	//16-23
+	else if (rPin >= 24 && rPin <= 31) this->pins[3] |= 0 << rPin-24;	//24-31*/
+  
+  this->rPin = rPin;
 }
 
 void I2C_Motor::init() {
@@ -57,11 +59,8 @@ void I2C_Motor::step(bool dir) {
 	uint8_t data[4], otherPins[4], outputPins[4];
 	this->chip->read(this->address,data); //read which pins are on and off.
 
-	//make sure that the dir pin is being either enabled or disabled.
-	if (this->dPin >= 0 && this->dPin <= 7) this->pins[0] &= ((dir << this->dPin)&0xff); //0-7
-	else if (this->dPin >= 8 && this->dPin <= 15) this->pins[1] &= ((dir << this->dPin)&0xff); //8-15
-	else if (this->dPin >= 16 && this->dPin <= 23) this->pins[2] &= ((dir << this->dPin)&0xff);  //16-23
-	else if (this->dPin >= 24 && this->dPin <= 31) this->pins[3] &= ((dir << this->dPin)&0xff);  //24-31
+  this->setDpin(dir);
+  this->setRpin(_reset);
 
 	//configure to set ONLY the pins we want on and off.
 	for(int i=0;i<4;i++){
@@ -80,11 +79,8 @@ void I2C_Motor::turnOn(bool dir){
 	uint8_t data[4], otherPins[4], outputPins[4];
 	this->chip->read(this->address,data); //read which pins are on and off.
 
-	//make sure that the dir pin is being either enabled or disabled.
-	if (this->dPin >= 0 && this->dPin <= 7) this->pins[0] &= ((dir << this->dPin)&0xff); //0-7
-	else if (this->dPin >= 8 && this->dPin <= 15) this->pins[1] &= ((dir << this->dPin)&0xff); //8-15
-	else if (this->dPin >= 16 && this->dPin <= 23) this->pins[2] &= ((dir << this->dPin)&0xff);  //16-23
-	else if (this->dPin >= 24 && this->dPin <= 31) this->pins[3] &= ((dir << this->dPin)&0xff);  //24-31
+  this->setDpin(dir);
+  this->setRpin(_reset);
 
 	//configure to set ONLY the pins we want on.
 	for(int i=0;i<4;i++){
@@ -101,16 +97,29 @@ void I2C_Motor::turnOff(bool dir){
 	uint8_t data[4], otherPins[4];
 	this->chip->read(this->address,data); //read which pins are on and off.
 
-	//make sure that the dir pin is being either enabled or disabled.
-	if (this->dPin >= 0 && this->dPin <= 7) this->pins[0] &= ((dir << this->dPin)&0xff); //0-7
-	else if (this->dPin >= 8 && this->dPin <= 15) this->pins[1] &= ((dir << this->dPin)&0xff); //8-15
-	else if (this->dPin >= 16 && this->dPin <= 23) this->pins[2] &= ((dir << this->dPin)&0xff);  //16-23
-	else if (this->dPin >= 24 && this->dPin <= 31) this->pins[3] &= ((dir << this->dPin)&0xff);  //24-31
+  this->setDpin(dir);
+  this->setRpin(_reset);
 
 	//configure to set ONLY the pins we want off.
 	for(int i=0;i<4;i++) otherPins[i] = data[i] & ~pins[i];
   
 	this->chip->write(this->address,otherPins,4,I2C_WRITE_RAW);
+}
+
+void I2C_Motor::setDpin(bool dir){
+  //make sure that the dir pin is being either enabled or disabled.
+  if (this->dPin >= 0 && this->dPin <= 7) this->pins[0] = (~(1 << this->dPin)&this->pins[0])|dir << this->dPin; //0-7
+  else if (this->dPin >= 8 && this->dPin <= 15) this->pins[1] = (~(1 << this->dPin-8)&this->pins[1])|dir << this->dPin-8; //8-15
+  else if (this->dPin >= 16 && this->dPin <= 23) this->pins[2] = (~(1 << this->dPin-16)&this->pins[2])|dir << this->dPin-16;  //16-23
+  else if (this->dPin >= 24 && this->dPin <= 31) this->pins[3] = (~(1 << this->dPin-24)&this->pins[3])|dir << this->dPin-24;;  //24-31
+}
+
+void I2C_Motor::setRpin(bool dir){
+  //make sure that the dir pin is being either enabled or disabled.
+  if (this->rPin >= 0 && this->rPin <= 7) this->pins[0] = (~(1 << this->rPin)&this->pins[0])|dir << this->rPin; //0-7
+  else if (this->rPin >= 8 && this->rPin <= 15) this->pins[1] = (~(1 << this->rPin-8)&this->pins[1])|dir << this->rPin-8; //8-15
+  else if (this->rPin >= 16 && this->rPin <= 23) this->pins[2] = (~(1 << this->rPin-16)&this->pins[2])|dir << this->rPin-16;  //16-23
+  else if (this->rPin >= 24 && this->rPin <= 31) this->pins[3] = (~(1 << this->rPin-24)&this->pins[3])|dir << this->rPin-24;;  //24-31
 }
 
 void I2C_Multiplexer::init() {

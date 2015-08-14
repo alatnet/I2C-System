@@ -41,6 +41,7 @@ public:
 	void step(bool dir); //refer to parent then step motor.
 	void turnOn(bool dir);
 	void turnOff(bool dir);
+  void reset(bool on) { this->_reset = on; }
 	void referToParent(I2C_Object* obj) {} //do nothing, we are the lowest device
 	void setParent(I2C_Object* p) { this->parent = p; }
 	void addI2CObj(I2C_Object* obj, unsigned int i) {} //dont need it
@@ -48,11 +49,15 @@ public:
 	void destroy() {}
 	unsigned char getAddress() { return this->address; }
 private:
-	unsigned char pins[4];
+	unsigned char address, pins[4];
 	I2C_Chip* chip;
 	I2C_Object* parent;
-	unsigned char address;
-  unsigned int dPin;
+	//unsigned char address;
+  unsigned int dPin,rPin;
+  bool _reset;
+
+  void setDpin(bool dir);
+  void setRpin(bool on);
 };
 
 class I2C_Multiplexer : public I2C_Object {
